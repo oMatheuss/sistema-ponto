@@ -22,3 +22,8 @@ Para login na url http://localhost:8080/login/process \
 outro endpoint é o de consulta na seguinte url:\
 (verbo get) http://localhost:8080/adm/ ou http://localhost:8080/user/, este busca pelo do usuario logado\
 (verbo get) http://localhost:8080/adm/busca/{id} este busca por codigo
+
+
+Após cadastro na url /cadastro e login na /login/process, dependendo do atributo authorities será o acesso a /user e /adm.\
+Após login será recibido um token (Authorization) que devera ser enviado manualmente de volta no header da requisição.\
+Só assim será possicel acessar as urls de consulta.
