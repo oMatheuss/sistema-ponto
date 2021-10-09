@@ -18,5 +18,5 @@ Para login: http://localhost:8080/login/process \
 "
 {"username":"matheus","password":"123"}
 "\
-outro endpoint é o de consulta na seguinte url (verbo get) http://localhost:8080/adm/ ou http://localhost:8080/user/, este busca todos cadastrados, (verbo get) http://localhost:8080/adm/busca/{id}
+outro endpoint é o de consulta na seguinte url:\ (verbo get) http://localhost:8080/adm/ ou http://localhost:8080/user/, este busca pelo do usuario logado\ (verbo get) http://localhost:8080/adm/busca/{id}
 este busca por codigo
