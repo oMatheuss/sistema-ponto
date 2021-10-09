@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+		<title>Login</title>
+		<link rel="stylesheet" type="text/css" href="sub/style.css" />
+	</head>
+	<body>
+		<center>
+			<b>Sistema Ponto</b><br />
+			<div class="grid">
+				<div class="caixa mod1"><br /><br />LOGIN</div>
+				<div class="caixa mod2"><br>
+					<form name="login" method="post" action="/login/process">
+						<div class="login">
+							username:<input type="textarea" id="username" name="username" />
+						</div><br /><br />
+						<div class="login">
+							password:<input type="password" id="password" name="password" />
+						</div><br /><br /><br />
+						<div class="login" style="padding:0">
+							<input type="submit" id="ok" value="Entrar" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</center>
+		<script src="sub/sendForm.js"></script>
+	</body>
+</html>
