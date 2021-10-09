@@ -17,7 +17,7 @@ E alguns endPoints disponiveis como o de cadastro(Verbo post) de funcionario atr
 Para login na url http://localhost:8080/login/process \
 "
 {"username":"matheus","password":"123"}
-" \
+"
 
 outro endpoint é o de consulta na seguinte url:\
 (verbo get) http://localhost:8080/adm/ ou http://localhost:8080/user/, este busca pelo do usuario logado\
