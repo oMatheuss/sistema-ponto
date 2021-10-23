@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().authenticated()
 			
 			.and()
-			.exceptionHandling().accessDeniedPage("/error").and()
+			.exceptionHandling().accessDeniedPage("/accesdenied").and()
 			
 			.formLogin().disable()
 			.httpBasic().disable()
