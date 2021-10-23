@@ -9,7 +9,7 @@ Executar o projeto atraves da classe "SistemaPontoApplication"
 
 Neste primeiro commit temos uma tabela funcionario que pode ser acessada na url: http://localhost:8080/h2-console
 
-E alguns endPoints disponiveis como o de cadastro(Verbo post) de funcionario atraves da url http://localhost:8080/cadastro com o seguinte modelo de json:\
+E alguns endPoints disponiveis como o de cadastro(Verbo post) de funcionario atraves da url http://localhost:8080/cadastrar com o seguinte modelo de json:\
 "
 {"username":"matheus","senha":"123","nome":"Matheus Silva", "email":"","authorities":["ADMIN", "USER"]}
 "
