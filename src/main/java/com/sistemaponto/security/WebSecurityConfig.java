@@ -1,23 +1,17 @@
 package com.sistemaponto.security;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -29,6 +23,9 @@ import com.sistemaponto.service.FuncionarioService;
 @EnableWebSecurity
 @ComponentScan("com.sistemaponto")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+	private JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	
 	@Bean
     public UserDetailsService userDetailsService() {
@@ -56,17 +53,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable().cors().and()
 			.authorizeRequests()
-			.antMatchers("/login/**", "/cadastrar", "/sub/**").permitAll()
-			.antMatchers(HttpMethod.GET, "/user/**").hasAnyRole("ADMIN", "USER")
+			.antMatchers("/login/process", "/cadastrar").permitAll()
+			.antMatchers(HttpMethod.GET, "/dados").hasAnyRole("ADMIN", "USER")
+			.antMatchers(HttpMethod.PUT, "/dados/atualizar").hasAnyRole("ADMIN", "USER")
 			.antMatchers(HttpMethod.GET, "/adm/**").hasRole("ADMIN")
 			.anyRequest().authenticated()
 			
 			.and()
-			.exceptionHandling().accessDeniedPage("/accesdenied").and()
+			.exceptionHandling().accessDeniedPage("/accessdenied")
+			.authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+			
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			
 			.formLogin().disable()
 			.httpBasic().disable()
-			.sessionManagement().sessionFixation().newSession().and()
 			
 			// filtra requisições de login
 			.addFilterBefore(new JWTSigninFilter("/login/process", authenticationManager()),

@@ -1,8 +1,5 @@
 package com.sistemaponto.controller;
 
-import com.sistemaponto.domain.Funcionario;
-import com.sistemaponto.service.FuncionarioService;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
+
+import com.sistemaponto.domain.Funcionario;
+import com.sistemaponto.service.FuncionarioService;
 
 @RestController
 public class FuncionarioController {
@@ -24,13 +23,7 @@ public class FuncionarioController {
 
     @Autowired
     private ModelMapper modelMapper;
-    
-    @GetMapping("/login")
-    public ModelAndView home() {
-    	ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login.html");
-        return modelAndView;
-    }
+
     
     @PostMapping("/cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
@@ -38,21 +31,23 @@ public class FuncionarioController {
     	service.salvar(funcionario);
     }
     
-    @RequestMapping("/user")
+    @RequestMapping("/dados")
     @ResponseStatus(HttpStatus.OK)
     public String user(HttpServletResponse response, Authentication authentication) {
     	return service.buscaPorUsername(authentication.getName()).info();
     }
     
-    @GetMapping("/adm")
-    @ResponseStatus(HttpStatus.OK)
-    public String user_adm(HttpServletResponse response, Authentication authentication) {
-    	//Tentar aqui
-    	if (authentication != null)
-    		return service.buscaPorUsername(authentication.getName()).info();
-		return null;
+    @PutMapping("/dados/atualizar")
+    public void atualizarFuncionario(HttpServletResponse response, Authentication authentication, 
+    		@RequestBody Funcionario funcionario){
+    	service.buscaPorUsernameO(authentication.getName()).map(funcionario1 -> {
+    		modelMapper.map(funcionario, funcionario1);
+    		return Void.TYPE;})
+    	.orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        "Funcionario nao encontrado"));
+    	service.salvar(funcionario);
     }
-     
+    
     @GetMapping("/adm/listarfuncionarios")
     @ResponseStatus(HttpStatus.OK)
     public List<Funcionario> listarFuncionario(){
@@ -67,20 +62,9 @@ public class FuncionarioController {
                         "Funcionario nao encontrado"));
     }
 
-    @PutMapping("/adm/atualizar/{id}")
-    public void atualizarFuncionario(@PathVariable("id") Long id,
-                                     @RequestBody Funcionario funcionario){
-        service.buscaPorCodigo(id)
-                .map(funcionario1 -> {
-                    modelMapper.map(funcionario, funcionario1);
-                    return Void.TYPE;})
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Funcionario nao encontrado"));
-    }
-
-    @GetMapping("/accesdenied")
+    @GetMapping("/accessdenied")
     public String naopermitido() {
         return "Acesso não permitido!";
     }
-
+    
 }

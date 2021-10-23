@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 
 @Service
@@ -39,19 +40,24 @@ public class FuncionarioService {
         return funcionarioRepository.findById(codigo);
     }
     
-    public Funcionario buscaPorUsername(String username) throws NoResultException {
-	    return entityManager
-				.createQuery("SELECT obj FROM Funcionario obj WHERE obj.username LIKE :target",
-						Funcionario.class)
-				.setParameter("target", username)
-				.getSingleResult();
+    public Optional<Funcionario> buscaPorUsernameO(String username) {
+    	Funcionario f = buscaPorUsername(username);
+    	if (f != null)
+    		return funcionarioRepository.findById(f.getCodigo());
+    	else
+    		return null;
     }
     
-    public String getName(Long cod) throws NoResultException {
-    	return entityManager
-				.createQuery("SELECT obj.nome FROM Funcionario obj WHERE obj.codigo LIKE :target",
-						String.class)
-				.setParameter("target", cod)
-				.getSingleResult();
+    public Funcionario buscaPorUsername(String username) {
+    	try {
+		    return entityManager
+					.createQuery("SELECT obj FROM Funcionario obj WHERE obj.username LIKE :target",
+							Funcionario.class)
+					.setParameter("target", username)
+					.getSingleResult();
+    	} catch (NoResultException | NonUniqueResultException e) {
+    		return null;
+    	}
     }
+    
 }

@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		try {
 			user = funcServ.buscaPorUsername(username);
 		} catch (NoResultException e) {
-			throw new UsernameNotFoundException("Ocorreu um problema!");
+			throw new UsernameNotFoundException("Usuario não encontrado!");
 		}
 		
 		return new MyUserDetails(user.getUsername(),
