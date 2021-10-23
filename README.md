@@ -1,24 +1,36 @@
 Sistema para Registro de Ponto online
 
-Requisitos: ter alguma ide para importar o projeto e ter o git instalado.
-
-Realizar o clone com o comando: "git clone https://github.com/joulucas/sistema-ponto.git"
-
 Importar o projeto como maven na ide.
-
 
 Executar o projeto atraves da classe "SistemaPontoApplication"
 
-Neste primeiro commit temos uma tabela funcionario que pode ser acessada na url: http://localhost:8080/h2-console
+Neste commit temos uma tabela funcionario que pode ser acessada na url: http://localhost:8080/h2-console
+(--> necessario implementar o banco sql)
 
-E alguns endPoints disponiveis como o de cadastro(Verbo post) de funcionario atraves da url http://localhost:8080/funcionario com o seguinte modelo de json:
+EndPoints disponiveis:
+
+--> Para cadastro(Verbo post) de funcionario atraves da url http://localhost:8080/cadastrar com o seguinte modelo de json:
 "
 {
-    "nome": "nome",
-    "email": "email@gmail.com",
-    "senha": "123",
-    "matricula": 123
+    "username":"nome-para-login",
+    "senha":"123",
+    "nome":"nome",
+    "authorities":["USER", "ADMIN"]
 }
 "
-outro endpoint é o de consulta na seguinte url (verbo get) http://localhost:8080/funcionario, este busca todos cadastrados, (verbo get) http://localhost:8080/funcionario{id}
-este busca por codigo
+--> Para login é a url (Verbo post) http://localhost:8080/login/process com o seguinte modelo json:
+{
+    "username":"nome-para-login",
+    "password":"123"
+}
+
+--> Para consulta dos propios dados é a url (Verbo get) http://localhost:8080/dados, somente após feito o login.
+
+--> Para alteração dos propios dados é a url (Verbo put) http://localhost:8080/dados/atualizar, somente após feito o login.
+(--> Necessario correção do metodo e da pesquisa realizada no banco, e definir quais dados poderão ser atualizados.)
+
+--> Para consulta de todos os dados de todos os usuarios a url é (Verbo get) http://localhost:8080/adm/listarfuncionarios.
+(--> Necessaria authorities:["ADMIN"])
+
+As requisições para /login/process e /cadastrar estão permitidas a todos, enquanto as outra é necessario estar com o header authorization.
+O header authorization é recebido como resposta para /login/process.
