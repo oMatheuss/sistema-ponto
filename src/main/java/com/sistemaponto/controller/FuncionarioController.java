@@ -78,4 +78,9 @@ public class FuncionarioController {
                 "Funcionario nao encontrado"));
     }
 
+    @GetMapping("/accesdenied")
+    public String naopermitido() {
+        return "Acesso não permitido!";
+    }
+
 }
