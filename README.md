@@ -9,7 +9,7 @@ Neste commit temos uma tabela funcionario que pode ser acessada na url: http://l
 
 EndPoints disponiveis:
 
---> Para cadastro(Verbo post) de funcionario atraves da url http://localhost:8080/cadastrar com o seguinte modelo de json:/<br/>
+--> Para cadastro(Verbo post) de funcionario atraves da url http://localhost:8080/cadastro com o seguinte modelo de json:/<br/>
 "<br/>
 {<br/>
     "username":"nome-para-login",<br/>
