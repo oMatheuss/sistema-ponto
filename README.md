@@ -18,6 +18,7 @@ EndPoints disponiveis:
     "authorities":["USER", "ADMIN"]<br/>
 }<br/>
 "<br/>
+--> (Há um endpoint em http://localhost:8080/login com um formulario de login basico definido)<br/>
 --> Para login é a url (Verbo post) http://localhost:8080/login/process com o seguinte modelo json:<br/>
 {<br/>
     "username":"nome-para-login",<br/>
