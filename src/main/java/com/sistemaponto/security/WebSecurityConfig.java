@@ -14,10 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.sistemaponto.security.service.UserDetailsServiceImpl;
-import com.sistemaponto.service.FuncionarioService;
 
 @Configuration
 @EnableWebSecurity
@@ -25,7 +23,7 @@ import com.sistemaponto.service.FuncionarioService;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	private JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private AuthenticationEntryPointImpl authenticationEntryPoint;
 	
 	@Bean
     public UserDetailsService userDetailsService() {
@@ -45,37 +43,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          
         return authProvider;
     }
-    
-    @Autowired
-	private FuncionarioService service;
 	
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable().cors().and()
+		httpSecurity
 			.authorizeRequests()
-			.antMatchers("/login/process", "/cadastrar").permitAll()
+			.antMatchers(HttpMethod.GET, "/").permitAll()
+			.antMatchers(HttpMethod.POST, "/login", "/cadastro").permitAll()
 			.antMatchers(HttpMethod.GET, "/dados").hasAnyRole("ADMIN", "USER")
 			.antMatchers(HttpMethod.PUT, "/dados/atualizar").hasAnyRole("ADMIN", "USER")
 			.antMatchers(HttpMethod.GET, "/adm/**").hasRole("ADMIN")
-			.anyRequest().authenticated()
+			.anyRequest().authenticated().and()
+			
+			.formLogin()
+			.usernameParameter("username").passwordParameter("password")
+			.loginPage("/login").permitAll()
+			.loginProcessingUrl("/login/process").permitAll()
+			.defaultSuccessUrl("/").and()
+			
+			.rememberMe().alwaysRemember(true).tokenValiditySeconds(1800)
+			.rememberMeCookieName("RememberMe").and()
+			
+			.logout().deleteCookies("RememberMe", "JSESSIONID")
+			.logoutUrl("/logout").logoutSuccessUrl("/").permitAll()
 			
 			.and()
 			.exceptionHandling().accessDeniedPage("/accessdenied")
-			.authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+			.authenticationEntryPoint(authenticationEntryPoint).and()
 			
 			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+			.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).and()
 			
-			.formLogin().disable()
-			.httpBasic().disable()
-			
-			// filtra requisições de login
-			.addFilterBefore(new JWTSigninFilter("/login/process", authenticationManager()),
-	                UsernamePasswordAuthenticationFilter.class)
-			
-			// filtra outras requisições para verificar a presença do JWT no header
-			.addFilterBefore(new JWTAuthenticationFilter(service),
-	                UsernamePasswordAuthenticationFilter.class);
+			.csrf().disable();
 	}
 	
 	@Override
@@ -86,10 +85,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
-		// cria uma conta default
-		auth.inMemoryAuthentication()
-			.withUser("admin")
-			.password(new BCryptPasswordEncoder().encode("admin"))
-			.roles("ADMIN");
 	}
 }

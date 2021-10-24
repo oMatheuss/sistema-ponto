@@ -24,8 +24,19 @@ public class FuncionarioController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public String inicio(){
+    	return "Api Sistema-Ponto";
+    }
     
-    @PostMapping("/cadastrar")
+    @GetMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public String login(){
+    	return "<html><head><meta charset='utf-8'></head><body><form action='/login/process' method='post'><input type='text' name='username'><br><input type='password' name='password'><br><input type='submit'></form></body></html>";
+    }
+    
+    @PostMapping("/cadastro")
     @ResponseStatus(HttpStatus.CREATED)
     public void salvar(@Valid @RequestBody Funcionario funcionario) {
     	service.salvar(funcionario);
@@ -63,7 +74,10 @@ public class FuncionarioController {
     }
 
     @GetMapping("/accessdenied")
-    public String naopermitido() {
+    public String naopermitido(HttpServletResponse response) {
+    	if(response.containsHeader("username")) {
+    		return "Acesso não permitido para " + response.getHeader("username") + "!";
+    	}
         return "Acesso não permitido!";
     }
     
