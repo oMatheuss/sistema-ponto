@@ -1,3 +1,4 @@
+(Essa é a versão que utiliza autenticação com token jwt)<br/>
 Sistema para Registro de Ponto online
 
 Importar o projeto como maven na ide.
