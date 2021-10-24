@@ -33,5 +33,4 @@ EndPoints disponiveis:
 --> Para consulta de todos os dados de todos os usuarios a url é (Verbo get) http://localhost:8080/adm/listarfuncionarios.<br/>
 (--> Necessaria authorities:["ADMIN"])
 
-As requisições para /login/process e /cadastrar estão permitidas a todos, enquanto as outra é necessario estar com o header authorization.<br/>
-O header authorization é recebido como resposta para /login/process.
+As requisições para /login/process e /cadastrar estão permitidas a todos, enquanto as outra é necessario estar com o cookie de sessão.<br/>
