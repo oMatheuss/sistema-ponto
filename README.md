@@ -4,6 +4,8 @@ Importar o projeto como maven na ide.
 
 Executar o projeto atraves da classe "SistemaPontoApplication"
 
+Schema para o banco -> "db_sistema_ponto"<br/>
+
 Neste commit temos uma tabela funcionario que pode ser acessada na url: http://localhost:8080/h2-console<br/>
 (--> necessario implementar o banco sql)
 
