@@ -7,22 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.lang.Iterable;
 import java.util.Optional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceContext;
 
 @Service
 public class FuncionarioService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
-    
-    @PersistenceContext
-	private EntityManager entityManager;
     
     @Autowired
     private PasswordEncoder encoder;
@@ -32,7 +24,7 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionario);
     }
 
-    public List<Funcionario> listarTodos(){
+    public Iterable<Funcionario> listarTodos(){
         return funcionarioRepository.findAll();
     }
 
@@ -40,24 +32,7 @@ public class FuncionarioService {
         return funcionarioRepository.findById(codigo);
     }
     
-    public Optional<Funcionario> buscaPorUsernameO(String username) {
-    	Funcionario f = buscaPorUsername(username);
-    	if (f != null)
-    		return funcionarioRepository.findById(f.getCodigo());
-    	else
-    		return null;
-    }
-    
     public Funcionario buscaPorUsername(String username) {
-    	try {
-		    return entityManager
-					.createQuery("SELECT obj FROM Funcionario obj WHERE obj.username LIKE :target",
-							Funcionario.class)
-					.setParameter("target", username)
-					.getSingleResult();
-    	} catch (NoResultException | NonUniqueResultException e) {
-    		return null;
-    	}
+    	return funcionarioRepository.findByUsername(username);
     }
-    
 }

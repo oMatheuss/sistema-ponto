@@ -1,6 +1,7 @@
 package com.sistemaponto.controller;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -47,24 +48,21 @@ public class FuncionarioController {
     public String user(HttpServletResponse response, Authentication authentication) {
     	return service.buscaPorUsername(authentication.getName()).info();
     }
-    
+    /*
     @PutMapping("/dados/atualizar")
     public void atualizarFuncionario(HttpServletResponse response, Authentication authentication, 
     		@RequestBody Funcionario funcionario){
-    	service.buscaPorUsernameO(authentication.getName()).map(funcionario1 -> {
-    		modelMapper.map(funcionario, funcionario1);
-    		return Void.TYPE;})
-    	.orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
-        "Funcionario nao encontrado"));
-    	service.salvar(funcionario);
+    	
     }
-    
+	*/
     @GetMapping("/adm/listarfuncionarios")
     @ResponseStatus(HttpStatus.OK)
     public List<Funcionario> listarFuncionario(){
-    	return service.listarTodos();
+		List<Funcionario> listaF = new ArrayList<Funcionario>();
+    	service.listarTodos().forEach(listaF::add);
+		return listaF;
     }
-
+	
     @GetMapping("/adm/busca/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Funcionario buscarFuncionarioPorID(@PathVariable("id") Long id){

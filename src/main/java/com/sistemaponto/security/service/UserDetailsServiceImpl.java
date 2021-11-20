@@ -23,7 +23,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		Funcionario user;
 		try {
 			user = funcServ.buscaPorUsername(username);
-			return new MyUserDetails(user.getUsername(),
+			return new MyUserDetails(
+				user.getUsername(),
 				user.getSenha(),
 				user.toRole());
 		} catch (NoResultException | NullPointerException e) {
