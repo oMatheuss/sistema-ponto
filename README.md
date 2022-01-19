@@ -1,38 +1,46 @@
-Sistema para Registro de Ponto online
+<h1>Sistema para Registro de Ponto online</h1>
 
-Importar o projeto como maven na ide.
+<h2>Detalhes do Projeto</h2>
 
-Executar o projeto atraves da classe "SistemaPontoApplication"
+O protótipo disponibilizado aqui é a minha participação no grupo para a disciplina de projetos integrados 2.<br />
 
-Schema para o banco -> "db_sistema_ponto"<br/>
+O que está disponivel aqui é: Parte do back-end desenvolvido usando spring-boot e mysql8.<br />
 
-Neste commit temos uma tabela funcionario que pode ser acessada na url: http://localhost:8080/h2-console<br/>
-(--> necessario implementar o banco sql)
+As features inclusas aqui são: implementação da  criação e acesso de contas, diferentes roles e login/logout.
 
-EndPoints disponiveis:
+<h2>Instruçôes para rodar o projeto:</h2>
 
---> Para cadastro(Verbo post) de funcionario atraves da url http://localhost:8080/cadastro com o seguinte modelo de json:/<br/>
-"<br/>
-{<br/>
-    "username":"nome-para-login",<br/>
-    "senha":"123",<br/>
-    "nome":"nome",<br/>
-    "authorities":["USER", "ADMIN"]<br/>
-}<br/>
-"<br/>
---> (Há um endpoint em http://localhost:8080/login com um formulario de login basico definido)<br/>
---> Para login é a url (Verbo post) http://localhost:8080/login/process com o seguinte modelo json:<br/>
-{<br/>
-    "username":"nome-para-login",<br/>
-    "password":"123"<br/>
-}<br/>
+Importar o projeto como maven na ide.<br />
+Executar o projeto atraves da classe "SistemaPontoApplication".
 
---> Para consulta dos propios dados é a url (Verbo get) http://localhost:8080/dados, somente após feito o login.
+<h4>DataBase:</h4>
+Criar o Schema <code>db_sistema_ponto</code> no banco de dados.<br/>
+Usuario e senha ao banco estão definidos como root.<br />
+Olhar <a href="src/main/resources/application.properties">application.properties</a> para mais configs.
 
---> Para alteração dos propios dados é a url (Verbo put) http://localhost:8080/dados/atualizar, somente após feito o login.<br/>
-(--> Necessario correção do metodo e da pesquisa realizada no banco, e definir quais dados poderão ser atualizados.)
+<h4>EndPoints disponiveis:</h4>
+<ul>
+<li> Para cadastro (verbo post) de funcionario atraves da url <code>/cadastro</code> com o modelo de json:</li>
+<pre><code>{
+    "username":"nome-para-login",
+    "senha":"123",
+    "nome":"nome",
+    "authorities":["USER", "ADMIN"]
+}</code></pre>
 
---> Para consulta de todos os dados de todos os usuarios a url é (Verbo get) http://localhost:8080/adm/listarfuncionarios.<br/>
-(--> Necessaria authorities:["ADMIN"])
+<li> Para login é a url (verbo post) <code>/login/process</code> com o modelo json:</li>
+<pre><code>{
+    "username":"nome-para-login",
+    "password":"123"
+}</code></pre>
+Obs: Há um endpoint em <code>/login</code> com um formulario de login basico definido
 
-As requisições para /login/process e /cadastrar estão permitidas a todos, enquanto as outra é necessario estar com o cookie de sessão.<br/>
+<li> Para consulta dos propios dados é a url (verbo get) <code>/dados</code>, somente após feito o login.</li>
+
+<li> Para alteração dos propios dados é a url (verbo put) <code>/dados/atualizar</code>, somente após feito o login.</li>
+Necessario correção do metodo e da pesquisa realizada no banco, e definir quais dados poderão ser atualizados.
+
+<li> Para consulta de todos os dados de todos os usuarios a url é (verbo get) <code>/adm/listarfuncionarios</code>.</li>
+Necessaria authorities:["ADMIN"]
+</ul>
+As requisições para <code>/login/process</code> e <code>/cadastrar</code> estão permitidas a todos, enquanto nas outras é necessario estar logado.<br/>
