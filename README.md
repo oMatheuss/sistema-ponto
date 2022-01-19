@@ -6,7 +6,7 @@ O protótipo disponibilizado aqui é a minha participação no grupo para a disc
 
 O que está disponivel aqui é: Parte do back-end desenvolvido usando spring-boot e mysql8.<br />
 
-As features inclusas aqui são: implementação da  criação e acesso de contas, diferentes roles e login/logout.
+As features concluidas são: criação e acesso de contas, diferentes roles e login/logout.
 
 <h2>Instruçôes para rodar o projeto:</h2>
 
